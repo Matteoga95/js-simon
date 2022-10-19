@@ -143,14 +143,24 @@ function getResult(randomNumbers, userNumbers) {
     //confronto i array e vedo quanti ne ha indovinati
 
     //ordino i 2 array e poi li confronto l'un l'altro
-    randomNumbers = randomNumbers.sort
-    userNumbers = userNumbers.sort
-    
+    randomNumbers.sort()
+    userNumbers.sort()
+
     console.log(randomNumbers);
     console.log(userNumbers);
     for (i = 0; i < randomNumbers.lenght; i++) {
 
-        if (userNumbers[i] == randomNumbers[i]) {
+        let trovato = false
+        //per confrontare 2 array per ognuno del primo ciclo il secondo e cerco il diretto interessato
+        for (k = 0; k < userNumbers.lenght; k++) {
+
+            if (userNumbers[k] == randomNumbers[i]) {
+                trovato = true
+            }
+
+        }
+
+        if (trovato == true) {
             console.log("hai vinto");
             //ha indovinato il numero
             resultString += "Hai indovinato il numero " + randomNumbers[i] + " bravo!" + "\n"
@@ -159,8 +169,6 @@ function getResult(randomNumbers, userNumbers) {
             //non lo ha indovinato
             resultString += "Non hai indovinato il numero " + randomNumbers[i] + " , mi dispiace..." + "\n"
         }
-
-
     }
 
     resultTextEl.innerText = resultString + "\n" + "Ricarica la pagina per ricominciare"
