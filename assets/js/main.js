@@ -10,12 +10,16 @@ const domContainer = document.getElementById("container");
 
 initBtn.addEventListener("click", function () {
 
+    initBtn.style.visibility = "hidden";
 
 
     let timerSeconds = 30;
 
     //faccio creare le celle dei numeri nella dom
-    createRandomNumbers(domContainer);
+    const randomNumbers = createRandomNumbers(domContainer);
+
+    //variabile per i numeri che inserirà l'user
+    let userNumbers = []
 
     //quando viene cliccato faccio partire un timer di 30 secondi e faccio visualizzare i numeri
     toggleContainer(domContainer);
@@ -24,30 +28,40 @@ initBtn.addEventListener("click", function () {
 
     var timeLeft = 30;
     let elem = document.getElementById('timer-text');
-    
-    var timerId = setInterval(countdown, 1000);
-    
-    function countdown() {
-      if (timeLeft == -1) {
-        clearTimeout(timerId);
 
-        //se il tempo arriva a 0 faccio quanto sotto
-        askNumbers();
-      } else {
-        elem.innerHTML = timeLeft ;
-        timeLeft--;
-      }
-    }
+    var timerId = setInterval(function () {
+        if (timeLeft == -1) {
 
+            clearTimeout(timerId);
 
+            //se il tempo arriva a 0 faccio quanto sotto
 
+            //disabilito la griglia
+            toggleContainer(domContainer);
 
+            //chiedo i numeri all'utente
+            const muTimeout = setTimeout(function () {
+
+                userNumbers = askNumbers();
+
+                //stampo il risultato
+                getResult(randomNumbers, userNumbers)
+
+            }, 500)
+
+        } else {
+            elem.innerHTML = timeLeft;
+            timeLeft--;
+        }
+    }, 1000);
 })
 
 
 
-//funzione che crea nel container 5 numeri casuali
+//funzione che crea nel container 5 numeri casuali, e li ritorna come risultato
 function createRandomNumbers(domEl) {
+
+    let randomNumbers = []
 
     //creo i numeri random e li aggiungo alla cella nella dom
     for (i = 0; i < 5; i++) {
@@ -58,7 +72,10 @@ function createRandomNumbers(domEl) {
         //inserisco l'elemento creato nell'elemento della dom passato a parametro
         domEl.insertAdjacentElement('beforeend', cellaEl);
 
+        randomNumbers.push(randomNum)
     }
+
+    return randomNumbers
 }
 
 //funzione toggle , fa sparire il container se presente e comparire se è sparito
@@ -94,9 +111,58 @@ function generateCellMarkup(numb) {
 }
 
 //funzione che chiede i nuemri con il prompt
-function askNumbers(){
+function askNumbers() {
     let numbers = []
 
+    for (i = 0; i < 5; i++) {
 
+        let userNum = Number(prompt("Inserisci uno dei numeri visti: "))
+
+        numbers.push(userNum)
+
+    }
+
+    return numbers
+}
+
+
+//funzione genero il risultato
+/**
+ * 
+ * @param {array} randomNumbers 
+ * @param {array} userNumbers 
+ */
+function getResult(randomNumbers, userNumbers) {
+
+    let resultString = "";
+
+    //stampo il risultato e dico di ricaricare la pagina per ricominciare
+    const resultTextEl = document.getElementById("result");
+    console.log(randomNumbers);
+    console.log(userNumbers);
+    //confronto i array e vedo quanti ne ha indovinati
+
+    //ordino i 2 array e poi li confronto l'un l'altro
+    randomNumbers = randomNumbers.sort
+    userNumbers = userNumbers.sort
+    
+    console.log(randomNumbers);
+    console.log(userNumbers);
+    for (i = 0; i < randomNumbers.lenght; i++) {
+
+        if (userNumbers[i] == randomNumbers[i]) {
+            console.log("hai vinto");
+            //ha indovinato il numero
+            resultString += "Hai indovinato il numero " + randomNumbers[i] + " bravo!" + "\n"
+        } else {
+            console.log("hai perso");
+            //non lo ha indovinato
+            resultString += "Non hai indovinato il numero " + randomNumbers[i] + " , mi dispiace..." + "\n"
+        }
+
+
+    }
+
+    resultTextEl.innerText = resultString + "\n" + "Ricarica la pagina per ricominciare"
 }
 
