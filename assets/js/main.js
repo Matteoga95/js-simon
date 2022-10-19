@@ -31,10 +31,14 @@ initBtn.addEventListener("click", function () {
 
     var timerId = setInterval(function () {
         if (timeLeft == -1) {
-
+            
             clearTimeout(timerId);
 
+
             //se il tempo arriva a 0 faccio quanto sotto
+
+            //tolgo il testo dal timer
+            elem.innerHTML = "";
 
             //disabilito la griglia
             toggleContainer(domContainer);
@@ -45,7 +49,7 @@ initBtn.addEventListener("click", function () {
                 userNumbers = askNumbers();
 
                 //stampo il risultato
-                getResult(randomNumbers, userNumbers)
+                getResult(randomNumbers, userNumbers);
 
             }, 500)
 
@@ -148,11 +152,14 @@ function getResult(randomNumbers, userNumbers) {
 
     console.log(randomNumbers);
     console.log(userNumbers);
-    for (i = 0; i < randomNumbers.lenght; i++) {
+
+
+
+    for (i = 0; i < 5; i++) {
 
         let trovato = false
         //per confrontare 2 array per ognuno del primo ciclo il secondo e cerco il diretto interessato
-        for (k = 0; k < userNumbers.lenght; k++) {
+        for (k = 0; k < 5; k++) {
 
             if (userNumbers[k] == randomNumbers[i]) {
                 trovato = true
